@@ -21,28 +21,26 @@ function Crud() {
     const [editage, seteditAge] = useState('');
     const [editisActive, seteditIsActive] = useState(0);
 
-
-
-    const empdata = [
-        {
-            id: 1,
-            name: 'manoj',
-            age: 21,
-            isActive: 1
-        },
-        {
-            id: 2,
-            name: 'rohit',
-            age: 25,
-            isActive: 1
-        },
-        {
-            id: 3,
-            name: 'sushan',
-            age: 20,
-            isActive: 0
-        }
-    ]
+    // const empdata = [
+    //     {
+    //         id: 1,
+    //         name: 'manoj',
+    //         age: 21,
+    //         isActive: 1
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'rohit',
+    //         age: 25,
+    //         isActive: 1
+    //     },
+    //     {
+    //         id: 3,
+    //         name: 'sushan',
+    //         age: 20,
+    //         isActive: 0
+    //     }
+   // ]
     const [data, setData] = useState([]);
 
     useEffect(() => {
