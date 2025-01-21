@@ -11,5 +11,7 @@ namespace Api_Demo_1.Model.Domain
         public string Name { get; set; }
 
         public string? RegionImageUrl { get; set; }
+
+        public string ContryName { get; set; }
     }
 }
