@@ -11,12 +11,12 @@ function Crud() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
- 
+
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [isActive, setIsActive] = useState(0);
 
-    const [editid, seteditId] = useState('')
+    const [editid, seteditId] = useState(0)
     const [editname, seteditName] = useState('');
     const [editage, seteditAge] = useState('');
     const [editisActive, seteditIsActive] = useState(0);
@@ -49,87 +49,91 @@ function Crud() {
         getData();
     }, [])
 
-    function getData(){
+    function getData() {
         axios.get(`http://localhost:5237/api/Employee`)
-        .then((result)=>{
-            setData(result.data)
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
+            .then((result) => {
+                setData(result.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     function handleEdit(id) {
         handleShow();
-        seteditId(id);
+
+        console.log(id);
         axios.get(`http://localhost:5237/api/Employee/${id}`)
-        .then((result)=>{
-            seteditName(result.data.name);
-            seteditAge(result.data.age);
-            seteditIsActive(result.data.isActive);
-            
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+            .then((result) => {
+
+                seteditName(result.data.name);
+                seteditAge(result.data.age);
+                seteditIsActive(result.data.editisActive);
+                seteditId(id);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
 
     }
     function handleDelete(id) {
-        if (window.confirm("are you sure to deletee this data?") == true) {
+        if (window.confirm("are you sure to delete this data?") == true) {
             axios.delete(`http://localhost:5237/api/Employee/${id}`)
-            .then((result)=>{
-                getData();
-            })
+                .then((result) => {
+                    getData();
+                })
         }
     }
     function handleUpdate() {
-        const url=`http://localhost:5237/api/Employee/${editid}`;
-        const data={
+
+    
+        const url = `http://localhost:5237/api/Employee/${editid}`;
+        const data = {
+            "id": editid,
             "name": editname,
             "age": editage,
             "isActive": editisActive
-       }
-
-       axios.put(url,data)
-       .then((result)=>{
-           getData();
-           //clear();
-       })
-    }
-
-    function handleSave(){
-        const url='http://localhost:5237/api/Employee';
-        const data={
-             
-             "name": name,
-             "age": age,
-             "isActive": isActive
         }
 
-        axios.post(url,data)
-        .then((result)=>{
-            getData();
-            clear();
-        })
+        axios.put(url, data)
+            .then((result) => {
+                getData();
+                console.log(result);
+                //clear();
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
-    function clear(){
+
+    function handleSave() {
+        const url = 'http://localhost:5237/api/Employee';
+        const data = {
+
+            "name": name,
+            "age": age,
+            "isActive": isActive
+        }
+
+        axios.post(url, data)
+            .then((result) => {
+                getData();
+                clear();
+            })
+    }
+    function clear() {
         setName('');
         setAge('');
         setIsActive(0);
         seteditName('');
         seteditAge('');
         seteditIsActive(0);
+        seteditId(0);
     }
-    function HandleIsActive(e){
-        if(e.target.checked){
-            seteditIsActive(1);
-        }
-        else{
-            seteditIsActive(0);
-        }
-    }
-
     
+
+
 
 
     return (
@@ -146,12 +150,14 @@ function Crud() {
                     </Col>
                     <Col>
                         <input type="checkbox" value={isActive}
-                            // onChange={(e) => setIsActive(e.target.value)} />
-                            onChange={(e)=> HandleIsActive(e)}/>
+
+
+                            onChange={(e) => seteditIsActive(e.target.checked ? 1 : 0)} />
+
                         <label>isActive</label>
                     </Col>
                     <Col>
-                        <button className="btn btn-primary" onClick={()=>{handleSave()}}>Submit</button>
+                        <button className="btn btn-primary" onClick={() => { handleSave() }}>Submit</button>
                     </Col>
                 </Row>
             </Container>
@@ -191,7 +197,7 @@ function Crud() {
                                 <tr>
                                     <td>loading...</td>
                                 </tr>
-                            
+
                             )
 
                     }
@@ -215,8 +221,9 @@ function Crud() {
                                 onChange={(e) => seteditAge(e.target.value)} />
                         </Col>
                         <Col>
-                            <input type="checkbox"  value={editisActive}
-                                onChange={(e) => seteditIsActive(e)} />
+                            <input type="checkbox" value={editisActive}
+
+                                onChange={(e) => seteditIsActive(e.target.checked ? 1 : 0)} />
                             <label>isActive</label>
                         </Col>
                     </Row>
@@ -225,10 +232,10 @@ function Crud() {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-        
-                     <Button variant="primary" onClick={handleUpdate}>
+
+                    <Button variant="primary" onClick={handleUpdate}>
                         Save Changes
-                    </Button> 
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
