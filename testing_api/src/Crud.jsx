@@ -21,26 +21,9 @@ function Crud() {
     const [editage, seteditAge] = useState('');
     const [editisActive, seteditIsActive] = useState(0);
 
-    // const empdata = [
-    //     {
-    //         id: 1,
-    //         name: 'manoj',
-    //         age: 21,
-    //         isActive: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'rohit',
-    //         age: 25,
-    //         isActive: 1
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'sushan',
-    //         age: 20,
-    //         isActive: 0
-    //     }
-   // ]
+    const [searchTerm, setSearchTerm] = useState('');
+
+
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -98,7 +81,7 @@ function Crud() {
             .then((result) => {
                 getData();
                 console.log(result);
-                //clear();
+                clear();
             })
             .catch((error) => {
                 console.log(error);
@@ -130,7 +113,9 @@ function Crud() {
         seteditId(0);
     }
     
-
+    const filteredData = data.filter(item =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
 
 
@@ -158,6 +143,24 @@ function Crud() {
                         <button className="btn btn-primary" onClick={() => { handleSave() }}>Submit</button>
                     </Col>
                 </Row>
+
+
+                <Row className="mt-3">
+                    <Col>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search by name"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </Col>
+                </Row>
+
+
+
+
+
             </Container>
             <br></br>
             <Table striped bordered hover>
@@ -172,8 +175,8 @@ function Crud() {
                 <tbody>
 
                     {
-                        data && data.length > 0 ? (
-                            data.map((item, index) => {
+                        filteredData && filteredData.length > 0 ? (
+                            filteredData.map((item, index) => {
                                 return (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
